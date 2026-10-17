@@ -1,0 +1,108 @@
+{
+	"policies": {
+		"Homepage": {
+			"Locked": true,
+      			"StartPage": "none"
+		},
+		"NewTabPage": false,
+		"FirefoxHome": {
+			"Widgets": {
+				"Enabled": false
+			},
+			"Search": false,
+			"TopSites": false
+		},
+		"NoDefaultBookmarks": true,
+		"ManagedBookmarks": [],
+		"DisplayBookmarksToolbar": "always",
+		"DNSOverHTTPS": {
+			"Enabled":  true,
+			"ProviderURL": "https://cloudflare-dns.com/dns-query",
+			"Locked": true,
+			"Fallback": false
+		},
+		"ExtensionSettings": {
+			"*": {
+        			"installation_mode": "blocked"
+			}
+		},
+		"AIControls": {
+			"Default": {
+				"Value": "blocked",
+				"Locked": true
+			}
+		},
+		"PDFjs": {
+			"Enabled": false
+		},
+		"GenerativeAI": {
+			"Enabled": false,
+			"Locked": true
+		},
+		"ContentAnalysis": {
+			"Enabled": false
+		},
+		"EnableTrackingProtection": {
+			"Value": true,
+			"Locked": false,
+			"Category": "strict",
+			"Exceptions": [
+				"https://www.nordea.se"
+			]
+		},
+		 "Cookies": {
+			"Locked": true,
+			"Behavior": "reject-foreign"
+		},
+		"SanitizeOnShutdown": true,
+		"Preferences": {
+			"privacy.query_stripping.enabled": {
+				"Value": true
+			},
+			"dom.serviceWorkers.enabled": {
+				"Value": false
+			},
+			"browser.urlbar.trending.featureGate": {
+				"Value": false,
+				"Locked": true
+			},
+			"browser.urlbar.suggest.trending": {
+				"Value": false,
+				"Locked": true
+			},
+			"browser.urlbar.suggest.weather": {
+				"Value": false,
+				"Locked": true
+			}
+		},
+		"FirefoxSuggest": {
+			"WebSuggestions": false,
+			"SponsoredSuggestions": false,
+			"ImproveSuggest": false,
+			"Locked": true
+		},
+		"Sync": {
+			"Enabled": false
+		},
+		"media.peerconnection.enabled": {
+			"Value": false,
+			"Locked": true
+		},
+		"DisableSafeMode": true,
+		"SearchSuggestEnabled": false,
+		"HttpsOnlyMode": "force_enabled",
+		"BlockAboutAddons": true,
+		"AutofillAddressEnabled": false,
+		"AutofillCreditCardEnabled": false,
+		"DisablePocket": true,
+		"DisableFirefoxAccounts": true,
+		"DisableFirefoxStudies": true,
+		"IPProtectionAvailable": false,
+		"DisableTelemetry": true,
+		"DontCheckDefaultBrowser": true,
+		"SkipTermsOfUse": true,
+		"NetworkPrediction": false,
+		"VisualSearchEnabled": false,
+		"PasswordManagerEnabled": false
+	}
+}
