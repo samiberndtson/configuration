@@ -1,0 +1,12 @@
+[Transfer]
+Verify=no
+
+[Source]
+Type=url-tar
+Path=https://samiberndtson.github.io/configuration/
+MatchPattern=config_@v.tar.xz
+
+[Target]
+Type=directory
+Path=/var/lib/extensions
+MatchPattern=my-config-ext_@v.confext
