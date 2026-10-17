@@ -1,0 +1,78 @@
+# Sample workflow for building and deploying a Jekyll site to GitHub Pages
+name: Deploy with GitHub Pages dependencies preinstalled
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
+# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+
+  build-and-deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps:deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout current tag
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Fetches all tags and history so we can jump around
+
+      - name: Set up Pages
+        uses: actions/configure-pages@v5
+
+      - name: Rebuild 3 Latest Versions from Git History
+        run: |
+          mkdir -p _site
+          
+          # 1. Get the 3 latest tags matching 'v*' sorted by semantic version
+          # This ensures we get the highest versions even if an older tag is patched out of order.
+          MAPFILE=()
+          while IFS= read -r tag; do
+            MAPFILE+=("$tag")
+          done < <(git tag -l 'v*' | sort -V -r | head -n 3)
+          
+          echo "Rebuilding artifacts for tags: ${MAPFILE[*]}"
+
+          # 2. Iterate through the top 3 tags, checkout their files, and build the tarballs
+          for TAG in "${MAPFILE[@]}"; do
+            # Extract version number (e.g., v1.2.3 -> 1.2.3)
+            VERSION="${TAG#v}"
+            FILENAME="config_${VERSION}.tar.xz"
+            
+            echo "Processing $TAG -> _site/$FILENAME"
+            
+            # Use 'git archive' to cleanly pull files from that specific tag without changing our current HEAD.
+            # Replace 'src/' with '.' if your config files are at the repository root.
+            git archive --format=tar --prefix=etc/ "$TAG" etc/ | xz -c > "_site/${FILENAME}"
+          done
+
+          # 3. Generate a fresh, clean SHA256SUMS file for these 3 versions
+          cd _site
+          sha256sum config_*.tar.xz > SHA256SUMS
+          cd ..
+
+      - name: Upload static web assets
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: '_site'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5
